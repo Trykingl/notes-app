@@ -2,6 +2,7 @@ plugins {
     kotlin("jvm") version "1.9.0"
     application
     jacoco
+    id("org.owasp.dependencycheck") version "8.4.0"
 }
 
 group = "com.notesapp"
@@ -45,4 +46,11 @@ tasks.jar {
     }
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
+}
+
+dependencyCheck {
+    analyzers {
+        assemblyEnabled = false
+    }
+    format = org.owasp.dependencycheck.reporting.ReportGenerator.Format.ALL
 }
